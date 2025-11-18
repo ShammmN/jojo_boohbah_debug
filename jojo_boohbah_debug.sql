@@ -53,9 +53,7 @@ FROM boohbah_stand_link
 WHERE sync_level > (SELECT AVG(sync_level) FROM boohbah_stand_link);
 
 --Question 9: --
-SELECT boohbah_id, stand_id
-FROM boohbah_stand_link
-WHERE (boohbah_id, stand_id) IN (SELECT boohbah_id, stand_id FROM boohbah_stand_link);
+SELECT boohbah_id, stand_id FROM boohbah_stand_link;
 
 --Question 10: --
 MERGE INTO boohbah b
