@@ -55,9 +55,9 @@ WHERE sync_level > (SELECT AVG(sync_level) FROM boohbah_stand_link);
 --Question 9: --
 SELECT boohbah_id, stand_id FROM boohbah_stand_link;
 
---Question 10: --
+--Question 10: (I recieved help) --
 MERGE INTO boohbah b
-USING jojo_stand s
-ON (b.boohbah_id = s.stand_id)
+USING (SELECT l.boohbah_id FROM boohbah_stand_link l JOIN jojo_stand s ON l.stand_id = s.stand_id) x
+ON (b.boohbah_id = x.boohbah_id)
 WHEN MATCHED THEN
-  UPDATE SET b.energy_level = 999;
+    UPDATE SET b.energy_level = 999;
