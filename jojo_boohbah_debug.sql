@@ -14,9 +14,13 @@ SELECT b.name, s.stand_name
 FROM boohbah b
 JOIN boohbah_stand_link l USING (boohbah_id)
 JOIN jojo_stand s ON l.stand_id = s.stand_id;
+--Fixed--
+SELECT b.name, s.stand_name
+FROM boohbah b
+JOIN boohbah_stand_link l ON b.boohbah_id = l.boohbah_id
+JOIN jojo_stand s ON l.stand_id = s.stand_id;
 
 --Question 3: --
-SELECT * FROM boohbah;
 SELECT name, color
 FROM boohbah
 WHERE energy_level > 80;
@@ -24,8 +28,7 @@ WHERE energy_level > 80;
 --Question 4: --
 SELECT b.boohbah_id, l.stand_id
 FROM boohbah b
-JOIN boohbah_stand_link l
-ON b.boohbah_id = l.boohbah_id
+JOIN boohbah_stand_link l ON b.boohbah_id = l.boohbah_id
 WHERE b.boohbah_id = 2;
 
 --Question 5: --
@@ -54,10 +57,21 @@ WHERE sync_level > (SELECT AVG(sync_level) FROM boohbah_stand_link);
 
 --Question 9: --
 SELECT boohbah_id, stand_id FROM boohbah_stand_link;
+--Fixed--
+SELECT boohbah_id, stand_id
+FROM boohbah_stand_link
+WHERE (boohbah_id, stand_id) 
+IN (SELECT boohbah_id, stand_id FROM boohbah_stand_link);
 
 --Question 10: (I recieved help) --
 MERGE INTO boohbah b
 USING (SELECT l.boohbah_id FROM boohbah_stand_link l JOIN jojo_stand s ON l.stand_id = s.stand_id) x
 ON (b.boohbah_id = x.boohbah_id)
 WHEN MATCHED THEN
-    UPDATE SET b.energy_level = 999;
+    UPDATE SET b.energy_level =  999;
+--Fixed--
+MERGE INTO boohbah b
+USING boohbah_stand_link l
+ON (b.boohbah_id = l.boohbah_id)
+WHEN MATCHED THEN
+    UPDATE SET b.energy_level = b.energy_level + 10;
